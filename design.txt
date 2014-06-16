@@ -1,0 +1,24 @@
+
+
+Sockets:
+
+- reconnect
+- retry lost jobs
+
+Workers:
+
+- ack when work is done
+- pull from upstream (inverted control)
+- fill socket
+- drain socket
+
+Orchestrator:
+
+- maintains a list of active nodes; their roles and their network addresses
+- does not 'assign work' or add/remove nodes from the pipeline
+
+Missing from Axon:
+
+- retry lost jobs on connectin
+- flood control
+- orchestration
