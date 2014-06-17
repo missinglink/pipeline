@@ -33,7 +33,7 @@ Orchestrator.prototype._debug = function(){
 }
 
 Orchestrator.prototype._bindMessageHandlers = function(){
-  this.on( 'message', function( msg, sockid ){
+  this.on( 'data', function( msg, sockid ){
     this._debug( 'RECV_MESSAGE', msg );
     if( 'object' == typeof msg ){
       switch( msg.cmd ){

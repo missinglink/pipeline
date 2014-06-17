@@ -18,7 +18,7 @@ BiDirectionalSocket.prototype.onmessage = function(sock){
   var sockid = !!sock._peername ? BiDirectionalSocket.generateId( sock._peername ) : null;
   return function( buf ){
     var msg = new Message( buf );
-    this.emit.apply( this, [ 'message' ].concat( msg.args, sockid ) );
+    this.emit.apply( this, [ 'data' ].concat( msg.args, sockid ) );
   }.bind(this);
 };
 

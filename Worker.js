@@ -10,20 +10,27 @@ var Worker = function( config ){
   this.config = config || {};
   this._validateSettings();
 
+  // sockets
   this.socks = {
     stdin:        new BiDirectionalSocket(),
     stdout:       new BiDirectionalSocket(),
+    // stderr:       new BiDirectionalSocket(),
     orchestrator: new BiDirectionalSocket()
   }
 
   // bind local event emitter to socket
-  this.socks.stdin.on( 'message', this.emit.bind( this, 'stdin' ) );
-  this.on( 'stdout', this.socks.stdout.send.bind( this.socks.stdout, 'message' ) );
+  this.socks.stdin.on( 'data', function( buf ){
+    this.emit.apply( this, [ 'data' ].concat( String( buf ) ) )
+  }.bind(this));
 
   this._bind( 0 );
 }
 
 util.inherits( Worker, EventEmitter );
+
+Worker.prototype.send = function(){
+  this.socks.stdout.send.apply( this.socks.stdout, arguments );
+}
 
 // validate the role & other settings
 Worker.prototype._validateSettings = function(){
@@ -90,7 +97,7 @@ Worker.prototype.pause = function(){
 
 // listen for messages from the orchestrator
 Worker.prototype._bindOrchestratorMessageHandlers = function(){
-  this.socks.orchestrator.on( 'message', function( msg ){
+  this.socks.orchestrator.on( 'data', function( msg ){
     this._debug( 'RECV_MESSAGE from orchestrator', msg );
     if( 'object' == typeof msg ){
       switch( msg.cmd ){
