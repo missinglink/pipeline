@@ -7,7 +7,7 @@ var filter1 = new Worker({
 });
 
 filter1.on( 'data', function( msg ){
-  console.log( 'worker got message', msg );
+  filter1._debug( 'worker got message', msg );
 });
 
 // filter1.pause();

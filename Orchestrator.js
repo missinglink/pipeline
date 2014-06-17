@@ -1,34 +1,32 @@
 
 var util = require('util');
-var BiDirectionalSocket = require('./BiDirectionalSocket');
-var Worker = require('./Worker');
+var Socket = require('./lib/sockets/Socket');
+var DuplexSocket = require('./lib/sockets/DuplexSocket');
 var PeerList = require('./PeerList');
 
 var Orchestrator = function( pipeline ){ 
-  BiDirectionalSocket.call(this);
+  DuplexSocket.call(this);
   this.peers = new PeerList( pipeline );
-  this._bindDebugErrorHandlers();
   this._bindMessageHandlers();
+  this.logConnectionInfo();
 }
 
-util.inherits( Orchestrator, BiDirectionalSocket );
+util.inherits( Orchestrator, DuplexSocket );
 
 Orchestrator.prototype._broadcast = function(){
-
   this.socks.forEach( function( sock ){
     if( sock.writable ){
       sock.write( this.pack([{
         cmd: 'peers',
-        body: this.peers.for( BiDirectionalSocket.generateId( sock._peername ) )
-      }]) );
+        body: this.peers.for( Socket.generateId( sock._peername ) )
+      }]));
     }
   }, this );
 }
 
 Orchestrator.prototype._debug = function(){
-  BiDirectionalSocket.debug.apply( this, [
-    'orchestrator',
-    this.id
+  Socket.debug.apply( process.stderr, [
+    'orchestrator', this.id
   ].concat( Array.prototype.slice.call( arguments ) ) );
 }
 
@@ -51,15 +49,6 @@ Orchestrator.prototype._bindMessageHandlers = function(){
     } else {
       this._debug( 'invalid msg envelope' );
     }
-  }.bind(this));
-}
-
-Orchestrator.prototype._bindDebugErrorHandlers = function(){
-  this.on( 'connect', function( sock ){
-    this._debug( 'CLIENT_CONNECT', sock._peername );
-  }.bind(this));
-  this.on( 'disconnect', function( sock ){
-    this._debug( 'CLIENT_DISCONNECT', sock._peername );
   }.bind(this));
 }
 

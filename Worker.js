@@ -1,7 +1,8 @@
 
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
-var BiDirectionalSocket = require('./BiDirectionalSocket');
+var Socket = require('./lib/sockets/Socket');
+var DuplexSocket = require('./lib/sockets/DuplexSocket');
 
 var Worker = function( config ){
 
@@ -12,24 +13,23 @@ var Worker = function( config ){
 
   // sockets
   this.socks = {
-    stdin:        new BiDirectionalSocket(),
-    stdout:       new BiDirectionalSocket(),
-    // stderr:       new BiDirectionalSocket(),
-    orchestrator: new BiDirectionalSocket()
+    stdin:        new Socket(),
+    stdout:       new DuplexSocket(),
+    // stderr:       process.stderr,
+    orchestrator: new DuplexSocket()
   }
 
-  // bind local event emitter to socket
-  this.socks.stdin.on( 'data', function( buf ){
-    this.emit.apply( this, [ 'data' ].concat( String( buf ) ) )
-  }.bind(this));
+  // forward inbound data to local emitter
+  this.socks.stdin.on( 'data', this.emit.bind( this, 'data' ) );
 
+  // bind local event emitter to socket
   this._bind( 0 );
 }
 
 util.inherits( Worker, EventEmitter );
 
-Worker.prototype.send = function(){
-  this.socks.stdout.send.apply( this.socks.stdout, arguments );
+Worker.prototype.write = function(){
+  this.socks.stdout.write.apply( this.socks.stdout, arguments );
 }
 
 // validate the role & other settings
@@ -61,7 +61,7 @@ Worker.prototype._announce = function(){
     // this._debug( 'announce', this.config );
 
     // accounce
-    this.socks.orchestrator.send({
+    this.socks.orchestrator.write({
       cmd: 'announce',
       body: {
         id: this.socks.stdout.id,
@@ -122,7 +122,7 @@ Worker.prototype._bindOrchestratorMessageHandlers = function(){
 }
 
 Worker.prototype._debug = function(){
-  BiDirectionalSocket.debug.apply( this, [
+  Socket.debug.apply( this.socks.stderr, [
     this.config.role,
     this.socks.stdout.id
   ].concat( Array.prototype.slice.call( arguments ) ) );
