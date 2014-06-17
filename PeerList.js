@@ -4,9 +4,9 @@ var EventEmitter = require('events').EventEmitter;
 
 var PeerList = function( pipeline ){
   EventEmitter.call(this);
-  this.pipeline = pipeline;
-  this.peers = {};
-  this.buildDependencyMap();
+  this._pipeline = pipeline;
+  this._peers = {};
+  this._buildDependencyMap();
 }
 
 util.inherits( PeerList, EventEmitter );
@@ -16,11 +16,11 @@ PeerList.prototype.registerPeer = function( peer, value ){
 }
 
 PeerList.prototype.registerPeerUniqId = function( uniq, value ){
-  if( !this.peers.hasOwnProperty( uniq ) ){
+  if( !this._peers.hasOwnProperty( uniq ) ){
     this.emit( 'register' );
   }
-  this.peers[ uniq ] = value;
-  this.buildDependencyMap();
+  this._peers[ uniq ] = value;
+  this._buildDependencyMap();
 }
 
 PeerList.prototype.unregisterPeer = function( peer ){
@@ -28,11 +28,11 @@ PeerList.prototype.unregisterPeer = function( peer ){
 }
 
 PeerList.prototype.unregisterPeerUniqId = function( uniq ){
-  if( this.peers.hasOwnProperty( uniq ) ){
+  if( this._peers.hasOwnProperty( uniq ) ){
     this.emit( 'unregister' );
   }
-  delete this.peers[ uniq ];
-  this.buildDependencyMap();
+  delete this._peers[ uniq ];
+  this._buildDependencyMap();
 }
 
 PeerList.prototype.import = function( nodelist ){
@@ -40,7 +40,7 @@ PeerList.prototype.import = function( nodelist ){
   var nodeListKeys = Object.keys( nodelist );
 
   // remove peers not in nodelist
-  for( var uniq in this.peers ){
+  for( var uniq in this._peers ){
     if( -1 === nodeListKeys.indexOf( uniq ) ){
       this.unregisterPeerUniqId( uniq );
     }
@@ -54,7 +54,7 @@ PeerList.prototype.import = function( nodelist ){
 }
 
 PeerList.prototype.export = function(){
-  return this.peers;
+  return this._peers;
 }
 
 // @example IPv4:0.0.0.0:44401:filter1
@@ -70,29 +70,33 @@ PeerList.parseUniqId = function( uniq ){
   }
 }
 
-PeerList.prototype.buildDependencyMap = function(){
+PeerList.prototype.for = function( id ){
+  return this._providers[ id ];
+}
+
+PeerList.prototype._buildDependencyMap = function(){
   
   // reset dependency list
-  this.deps = {};
+  this._providers = {};
 
   // iterate peer list
-  for( var uniq in this.peers ){
+  for( var uniq in this._peers ){
 
     // find current consumer in peers
-    var controlsockid = this.peers[ uniq ];
+    var controlsockid = this._peers[ uniq ];
 
     // create an array to store a list of peers which
     // can act as a provider for this consumer
-    this.deps[ controlsockid ] = [];
+    this._providers[ controlsockid ] = [];
 
     // parse the consumer uniq
     var parsed = PeerList.parseUniqId( uniq );
 
     // find provider role name for consumer role
-    var providerRole = this.pipeline.reverse[ parsed.role ];
+    var providerRole = this._pipeline.reverse[ parsed.role ];
 
     // build a list of providers for that role
-    for( var uniq2 in this.peers ){
+    for( var uniq2 in this._peers ){
 
       if( uniq === uniq2 ) continue; // skip itself
 
@@ -103,7 +107,7 @@ PeerList.prototype.buildDependencyMap = function(){
       if( parsed2.role === providerRole ){
 
         // append peer id to list of providers for this consumer
-        this.deps[ controlsockid ].push( parsed2.id );
+        this._providers[ controlsockid ].push( parsed2.id );
 
       }
     }

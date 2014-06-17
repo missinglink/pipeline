@@ -10,4 +10,7 @@ function spawn( workerName ){
   worker.stdout.on( 'data', function( buf ) {
     process.stdout.write( String( buf ) );
   });
+  worker.stderr.on( 'data', function( buf ) {
+    process.stderr.write( String( buf ) );
+  });
 }

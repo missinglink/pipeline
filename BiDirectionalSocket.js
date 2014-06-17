@@ -6,8 +6,8 @@ var Socket = require('axon').Socket,
 
 function BiDirectionalSocket( config ) {
   Socket.call( this );
-  this.assignId();
-  this.bindDebugErrorHandlers();
+  this._assignId();
+  this._bindDebugErrorHandlers();
 }
 
 BiDirectionalSocket.prototype.__proto__ = Socket.prototype;
@@ -23,13 +23,13 @@ BiDirectionalSocket.prototype.onmessage = function(sock){
 };
 
 // set id on bind
-BiDirectionalSocket.prototype.assignId = function(){
+BiDirectionalSocket.prototype._assignId = function(){
   this.on( 'bind', function(){
     this.id = BiDirectionalSocket.generateId( this.server.address() );
   });
 }
 
-BiDirectionalSocket.prototype.bindDebugErrorHandlers = function(){
+BiDirectionalSocket.prototype._bindDebugErrorHandlers = function(){
   this.on( 'error', function( err ){
     var args = Array.prototype.slice.call( arguments );
     console.error.apply( console, [ 'ERROR'.bold.red ].concat( args ) );

@@ -8,7 +8,7 @@ var Worker = function( config ){
   EventEmitter.call(this);
 
   this.config = config || {};
-  this.validateSettings();
+  this._validateSettings();
 
   this.socks = {
     stdin:        new BiDirectionalSocket(),
@@ -20,13 +20,13 @@ var Worker = function( config ){
   this.socks.stdin.on( 'message', this.emit.bind( this, 'stdin' ) );
   this.on( 'stdout', this.socks.stdout.send.bind( this.socks.stdout, 'message' ) );
 
-  this.bind( 0 );
+  this._bind( 0 );
 }
 
 util.inherits( Worker, EventEmitter );
 
 // validate the role & other settings
-Worker.prototype.validateSettings = function(){
+Worker.prototype._validateSettings = function(){
   if( !this.config.role ||
       !( typeof this.config.role == 'string') ||
       !this.config.role.length ){
@@ -35,23 +35,23 @@ Worker.prototype.validateSettings = function(){
 }
 
 // bind worker stdout socket
-Worker.prototype.bind = function( port ){
+Worker.prototype._bind = function( port ){
 
   this.socks.stdout.on( 'bind', function(){
-    this.bindOrchestratorMessageHandlers();
-    this.announce();
+    this._bindOrchestratorMessageHandlers();
+    this._announce();
   }.bind(this));
 
   this.socks.stdout.bind( port || 0 );
 }
 
 // announce the sockets availability to the orchestrator
-Worker.prototype.announce = function(){
+Worker.prototype._announce = function(){
 
   // listen for connection events to the orchestrator
   this.socks.orchestrator.on( 'connect', function(){
-    this.debug( 'CONNECT to orchestrator' );
-    // this.debug( 'announce', this.config );
+    this._debug( 'CONNECT to orchestrator' );
+    // this._debug( 'announce', this.config );
 
     // accounce
     this.socks.orchestrator.send({
@@ -71,12 +71,12 @@ Worker.prototype.announce = function(){
   );
 }
 
-Worker.prototype.start = function( inPort ){
+Worker.prototype._start = function( inPort ){
 
-  this.debug( 'CONNECTING TO:', inPort );
+  this._debug( 'CONNECTING TO:', inPort );
 
   this.socks.stdin.on( 'connect', function(){
-    this.debug( 'CONNECTED_TO_PEER', 'at: ' + inPort );
+    this._debug( 'CONNECTED_TO_PEER', 'at: ' + inPort );
     this.emit( 'start' );
   }.bind(this));
 
@@ -84,14 +84,14 @@ Worker.prototype.start = function( inPort ){
 }
 
 Worker.prototype.pause = function(){
-  this.debug( 'SOCK_PAUSE' );
+  this._debug( 'SOCK_PAUSE' );
   // this.socks.stdin.close();
 }
 
 // listen for messages from the orchestrator
-Worker.prototype.bindOrchestratorMessageHandlers = function(){
+Worker.prototype._bindOrchestratorMessageHandlers = function(){
   this.socks.orchestrator.on( 'message', function( msg ){
-    this.debug( 'RECV_MESSAGE from orchestrator', msg );
+    this._debug( 'RECV_MESSAGE from orchestrator', msg );
     if( 'object' == typeof msg ){
       switch( msg.cmd ){
         case 'peers' :
@@ -99,22 +99,22 @@ Worker.prototype.bindOrchestratorMessageHandlers = function(){
             //@todo: should connect to ALL available peers
             // console.log( 'got list of peers!', msg.body );
             if( msg.body.length > 0 ){
-              this.start( msg.body[ 0 ].split(':')[2] );
+              this._start( msg.body[ 0 ].split(':')[2] );
             }
           } else {
-            this.debug( 'invalid peers list' );
+            this._debug( 'invalid peers list' );
           }
           break;
         default:
-          this.debug( 'unknown command', msg.cmd );
+          this._debug( 'unknown command', msg.cmd );
       }
     } else {
-      this.debug( 'invalid msg envelope' );
+      this._debug( 'invalid msg envelope' );
     }
   }.bind(this));
 }
 
-Worker.prototype.debug = function(){
+Worker.prototype._debug = function(){
   BiDirectionalSocket.debug.apply( this, [
     this.config.role,
     this.socks.stdout.id
