@@ -1,0 +1,25 @@
+{
+  "name": "pipeline",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "amp-message": "^0.1.2",
+    "axon": "^2.0.0",
+    "colors": "^0.6.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/missinglink/pipeline.git"
+  },
+  "author": "Peter Johnson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/missinglink/pipeline/issues"
+  },
+  "homepage": "https://github.com/missinglink/pipeline"
+}
