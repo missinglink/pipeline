@@ -38,6 +38,7 @@ Worker.prototype.validateSettings = function(){
 Worker.prototype.bind = function( port ){
 
   this.socks.stdout.on( 'bind', function(){
+    this.bindOrchestratorMessageHandlers();
     this.announce();
   }.bind(this));
 
@@ -46,38 +47,6 @@ Worker.prototype.bind = function( port ){
 
 // announce the sockets availability to the orchestrator
 Worker.prototype.announce = function(){
-
-  // listen for messages from the orchestrator
-  this.socks.orchestrator.on( 'message', function( msg ){
-    if( 'object' == typeof msg ){
-
-      switch( msg.cmd ){
-        case 'peers' :
-          if( msg.hasOwnProperty( 'body' ) ){
-
-            //@todo: should connect to ALL available peers
-
-            // console.log( 'got list of peers!', msg.body );
-            if( msg.body.length > 0 ){
-              this.start( msg.body[ 0 ].split(':')[2] );
-            }
-            // this.peers.import( msg.body );
-          }
-          else {
-            this.debug( 'invalid peers list' );
-          }
-          break;
-        default:
-          this.debug( 'unknown command', msg.cmd );
-      }
-
-    } else {
-      this.debug( 'invalid msg envelope' );
-    }
-
-    this.debug( 'RECV_MESSAGE from orchestrator', msg );
-
-  }.bind(this));
 
   // listen for connection events to the orchestrator
   this.socks.orchestrator.on( 'connect', function(){
@@ -117,6 +86,32 @@ Worker.prototype.start = function( inPort ){
 Worker.prototype.pause = function(){
   this.debug( 'SOCK_PAUSE' );
   // this.socks.stdin.close();
+}
+
+// listen for messages from the orchestrator
+Worker.prototype.bindOrchestratorMessageHandlers = function(){
+  this.socks.orchestrator.on( 'message', function( msg ){
+    this.debug( 'RECV_MESSAGE from orchestrator', msg );
+    if( 'object' == typeof msg ){
+      switch( msg.cmd ){
+        case 'peers' :
+          if( msg.hasOwnProperty( 'body' ) ){
+            //@todo: should connect to ALL available peers
+            // console.log( 'got list of peers!', msg.body );
+            if( msg.body.length > 0 ){
+              this.start( msg.body[ 0 ].split(':')[2] );
+            }
+          } else {
+            this.debug( 'invalid peers list' );
+          }
+          break;
+        default:
+          this.debug( 'unknown command', msg.cmd );
+      }
+    } else {
+      this.debug( 'invalid msg envelope' );
+    }
+  }.bind(this));
 }
 
 Worker.prototype.debug = function(){

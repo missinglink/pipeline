@@ -13,30 +13,19 @@ function BiDirectionalSocket( config ) {
 BiDirectionalSocket.prototype.__proto__ = Socket.prototype;
 BiDirectionalSocket.prototype.send = PubSocket.prototype.send;
 
+// override onmessage to pass sockid as second param
 BiDirectionalSocket.prototype.onmessage = function(sock){
-  var self = this;
-  var sockid = null;
-
-  if( sock._peername ){
-    sockid = [
-      sock._peername.family,
-      sock._peername.address,
-      sock._peername.port
-    ].join(':');
-  }
-
-  return function(buf){
-    var msg = new Message(buf);
-    self.emit.apply(self, ['message'].concat(msg.args,sockid));
-  };
+  var sockid = !!sock._peername ? BiDirectionalSocket.generateId( sock._peername ) : null;
+  return function( buf ){
+    var msg = new Message( buf );
+    this.emit.apply( this, [ 'message' ].concat( msg.args, sockid ) );
+  }.bind(this);
 };
 
+// set id on bind
 BiDirectionalSocket.prototype.assignId = function(){
-  // set id on bind
-  this.id = null;
   this.on( 'bind', function(){
-    var address = this.server.address();
-    this.id = [ address.family, address.address, address.port ].join(':');
+    this.id = BiDirectionalSocket.generateId( this.server.address() );
   });
 }
 
@@ -49,6 +38,10 @@ BiDirectionalSocket.prototype.bindDebugErrorHandlers = function(){
     var args = Array.prototype.slice.call( arguments );
     console.error.apply( console, [ 'SOCKET_ERROR'.bold.red ].concat( err.code ) );
   });
+}
+
+BiDirectionalSocket.generateId = function( address ){
+  return [ address.family, address.address, address.port ].join( ':' );
 }
 
 BiDirectionalSocket.debug = function( role, id ){
