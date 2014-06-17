@@ -15,4 +15,4 @@ map1.socks.stdout.on( 'connect', function(){
   setInterval( function(){
     map1.emit( 'stdout', 'map1 says kia ora!' );
   }, 100 );
-})
+});
