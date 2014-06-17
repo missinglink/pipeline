@@ -24,12 +24,6 @@ Orchestrator.prototype._broadcast = function(){
   }, this );
 }
 
-Orchestrator.prototype._debug = function(){
-  Socket.debug.apply( process.stderr, [
-    'orchestrator', this.id
-  ].concat( Array.prototype.slice.call( arguments ) ) );
-}
-
 Orchestrator.prototype._bindMessageHandlers = function(){
   this.on( 'data', function( msg, sockid ){
     this._debug( 'RECV_MESSAGE', msg );
@@ -50,6 +44,12 @@ Orchestrator.prototype._bindMessageHandlers = function(){
       this._debug( 'invalid msg envelope' );
     }
   }.bind(this));
+}
+
+Orchestrator.prototype._debug = function(){
+  Socket.debug.apply( process.stderr, [
+    'orchestrator', this.id
+  ].concat( Array.prototype.slice.call( arguments ) ) );
 }
 
 module.exports = Orchestrator;
