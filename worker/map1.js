@@ -1,7 +1,7 @@
 
-var Worker = require('../Worker');
+var pipeline = require('../');
 
-var map1 = new Worker({
+var map1 = new pipeline.Worker({
   role: 'map1',
   orchestrator: { port: 5000 }
 });
