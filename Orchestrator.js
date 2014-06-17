@@ -13,6 +13,8 @@ var Orchestrator = function( pipeline ){
 
 util.inherits( Orchestrator, DuplexSocket );
 
+// Broadcast a list of provider peers for each
+// connected socket.
 Orchestrator.prototype._broadcast = function(){
   this.socks.forEach( function( sock ){
     if( sock.writable ){
