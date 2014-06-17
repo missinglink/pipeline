@@ -1,7 +1,8 @@
 
 var Socket = require('axon').Socket,
     PubSocket = require('axon').PubSocket,
-    Message = require('amp-message');
+    Message = require('amp-message'),
+    colors = require('colors');
 
 function BiDirectionalSocket( config ) {
   Socket.call( this );
@@ -40,30 +41,29 @@ BiDirectionalSocket.prototype.assignId = function(){
 }
 
 BiDirectionalSocket.prototype.bindDebugErrorHandlers = function(){
-  this.on( 'error', function(){
+  this.on( 'error', function( err ){
     var args = Array.prototype.slice.call( arguments );
-    console.error.apply( console, [ 'ERROR' ].concat( args ) );
+    console.error.apply( console, [ 'ERROR'.bold.red ].concat( args ) );
   });
-  this.on( 'socket error', function(){
+  this.on( 'socket error', function( err ){
     var args = Array.prototype.slice.call( arguments );
-    console.error.apply( console, [ 'SOCKET_ERROR' ].concat( args ) );
+    console.error.apply( console, [ 'SOCKET_ERROR'.bold.red ].concat( err.code ) );
   });
 }
 
 BiDirectionalSocket.debug = function( role, id ){
   console.log.apply( console, [
-    '\x1b[1;33m' + role + '\x1b[0m' +
-    '\x1b[1;2m@\x1b[0m' +
-    '\x1b[1;32m' + id.replace('IPv4:0.0.0.0:','') + '\x1b[0m' +
-    '\x1b[1;2m:\x1b[0m',
+    role.bold.yellow +
+    '@'.grey +
+    id.replace('IPv4:0.0.0.0:','').bold.green +
+    ':'.grey,
   ].concat( Array.prototype.slice.call(arguments,2) ).map( function( item ){
     if( 'object' == typeof item ){
-      return '\x1b[1;1m' +
-             JSON.stringify( item, null, 1 )
+      return JSON.stringify( item, null, 1 )
                  .replace( /\n/g, '' )
                  .replace( /([\w\}])\}/g, "$1 }" )
                  .replace( /  ? ? ?/g, ' ' )
-             + '\x1b[0m';
+                 .bold.white;
     }
     return item;
   }));
