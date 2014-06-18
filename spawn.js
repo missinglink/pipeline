@@ -2,6 +2,15 @@
 var child = require('child_process');
 
 spawn( 'filter1' );
+spawn( 'filter2' );
+spawn( 'filter3' );
+// spawn( 'filter2' );
+// spawn( 'filter2' );
+// spawn( 'filter2' );
+// spawn( 'filter2' );
+// spawn( 'filter2' );
+// spawn( 'filter2' );
+// spawn( 'filter2' );
 spawn( 'map1' );
 spawn( 'orchestrator' );
 
