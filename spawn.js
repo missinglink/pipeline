@@ -12,6 +12,7 @@ spawn( 'filter3' );
 // spawn( 'filter2' );
 // spawn( 'filter2' );
 spawn( 'map1' );
+spawn( 'map2' );
 spawn( 'orchestrator' );
 
 function spawn( workerName ){

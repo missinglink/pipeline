@@ -2,7 +2,7 @@
 var pipeline = require('../');
 
 var map1 = new pipeline.Worker({
-  role: 'map1',
+  role: 'map',
   orchestrator: { port: 5000 }
 });
 
@@ -22,7 +22,7 @@ var ord = 0;
 setInterval( function(){
 
   if( map1.socks.stdout.socks.length ){
-    map1.write({ msg: 'hello from packet: ' + ord++ });
+    map1.write({ msg: 'hello from map1: ' + ord++ });
   }
 
   // map1.emit( 'stdout', 'map1 says kia ora!' );
