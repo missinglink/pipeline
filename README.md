@@ -172,7 +172,7 @@ new pipeline.Pipeline()
 
 ... simple as that, the pipeline will load-balance each role. workers will slow-down and speed up depending on the ability of the 3rd party services to fulful the requests.
 
-**Note:** The `parser` should pause iteration when no peer sockets are connected to `stdout` to avoid filling up the RAM.
+**Note:** The `parser` should pause iteration when no peer sockets are connected; this will avoid filling up the RAM.
 
 **Note:** The `mongo_client` should call `worker.pause()` if mongodb starts to become slow or un-responsive.
 
