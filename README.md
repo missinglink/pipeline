@@ -165,10 +165,8 @@ parser ──┤              ├─→ merger ─→ mongo_client
 
 ```javascript
 new pipeline.Pipeline()
-  .from('parser').to('facebook')
-  .from('parser').to('twitter')
-  .from('facebook').to('merger')
-  .from('twitter').to('merger')
+  .from('parser').to('facebook').from('facebook').to('merger')
+  .from('parser').to('twitter').from('twitter').to('merger')
   .from('merger').to('mongo_client');
 ```
 
