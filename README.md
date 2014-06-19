@@ -7,7 +7,7 @@ A distributed non-buffering data pipeline with built in orchestrator and flood c
   
 **Unpublished** - calls to `require('pipeline')` will fail as the module is not being published in `npm`. Additionally the name `pipeline` has been taken so it will use a different name.  
   
- Run `npm run symlink` to create a symlink that fixes this during development.
+Run `npm run symlink` to create a symlink that fixes this during development.
     
 ----
 
@@ -80,5 +80,18 @@ The worker will automatically handle concurrency control; when the maximum numbe
 When the worker is again free to process data it will automatically re-connect it's `stdin` socket(s) and start processing messages again.  
   
 ----  
+  
+#### trying out the project  
+  
+You can try out the project in it's current form; while the code is not release-ready yet, there IS a functional demo that runs all the workers in child processes and .  
+  
+```bash  
+$> git clone git@github.com:missinglink/pipeline.git && cd pipeline
+$> npm install  
+$> npm run symlink  
+$> npm start
+```
+    
+----
   
 ... more to come
