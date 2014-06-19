@@ -11,7 +11,7 @@ Run `npm run symlink` to create a symlink that fixes this during development.
     
 ----
 
-#### unix philosophy  
+#### based on unix pipes  
   
 `unix pipes` provide an amazingly easy-to-use and portable API.
 
@@ -19,6 +19,10 @@ Run `npm run symlink` to create a symlink that fixes this during development.
 #unix pipes  
 echo '{ hello: "world" }' | filter.sh 2>> error.txt | map.sh 1> out.txt 2>> error.txt  
 ```
+
+----
+
+#### pipeline
 
 `pipeline` aims to extend that `API` to `TCP` sockets while also offering:
 
