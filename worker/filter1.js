@@ -7,13 +7,19 @@ var filter1 = new pipeline.Worker({
   orchestrator: { port: 5000 }
 });
 
+var ord = 0;
+
 filter1.on( 'data', function( msg, done ){
 
   filter1._debug( 'filter1 got message', msg );
   
-  // var rand = Math.random() * 5000;
+  var rand = Math.random() * 5000;
 
-  setTimeout( done, ( Math.random() * 2000 ) );
+  setTimeout( function(){
+    filter1.write( { msg: msg.msg + ' | filter: ' + ord++ }, done );
+  }, ( Math.random() * 2000 ) )
+
+  // setTimeout( done, ( Math.random() * 2000 ) );
   // if( rand ){
     // console.log( 'done' );
     // done();

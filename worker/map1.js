@@ -18,11 +18,14 @@ map1.socks.stdout.on( 'connect', function(){
 });
 
 var ord = 0;
+var paused = false;
 
 setInterval( function(){
 
-  if( map1.socks.stdout.socks.length ){
-    map1.write({ msg: 'hello from map1: ' + ord++ });
+  if( map1.isWritable() ){
+    map1.write({ msg: 'map:' + ord++ });
+  } else {
+    // do nothing
   }
 
   // map1.emit( 'stdout', 'map1 says kia ora!' );

@@ -2,8 +2,9 @@
 var child = require('child_process');
 
 spawn( 'filter1' );
-spawn( 'filter2' );
-spawn( 'filter3' );
+// spawn( 'filter2' );
+// spawn( 'filter3' );
+spawn( 'logger' );
 // spawn( 'filter2' );
 // spawn( 'filter2' );
 // spawn( 'filter2' );
@@ -12,7 +13,7 @@ spawn( 'filter3' );
 // spawn( 'filter2' );
 // spawn( 'filter2' );
 spawn( 'map1' );
-spawn( 'map2' );
+// spawn( 'map2' );
 spawn( 'orchestrator' );
 
 function spawn( workerName ){
