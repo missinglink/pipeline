@@ -64,12 +64,20 @@ var worker = new pipeline.Worker({
   orchestrator: { port: 5000 }
 });
 
+// recieve work from upstream
 worker.on( 'data', function( msg, done ){
 
-  worker._debug( 'worker got message', msg );
+  worker._debug( 'worker2 got message', msg );
   
-  doSomethingAsnyc( { cmd: 'takes_time' }, function( err, data ){  
-    done(); // worker completed this task
+  // do some work on the data
+  doSomethingAsnyc( { cmd: 'takes_time', msg: msg }, function( err, data ){  
+    
+    // send some work downstream
+    worker.write( data );
+
+    // worker must call done() when task is completed
+    done();
+
   });
 
 });
@@ -77,7 +85,7 @@ worker.on( 'data', function( msg, done ){
   
 The worker will automatically handle concurrency control; when the maximum number of concurrent jobs are being executed on this process the `stdin` socket(s) will disconnect.  
   
-When the worker is again free to process data it will automatically re-connect it's `stdin` socket(s) and start processing messages again.  
+When the worker is again free to process data it will automatically re-connect it's `stdin` socket(s) and start processing messages again. 
   
 ----  
   
