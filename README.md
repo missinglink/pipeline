@@ -58,26 +58,18 @@ Example worker:
 ```javascript  
 var pipeline = require('pipeline');
 
-var filter = new pipeline.Worker({
+var worker = new pipeline.Worker({
   role: 'filter',
   concurrency: 10,
   orchestrator: { port: 5000 }
 });
 
-// recieve work from upstream
-filter.on( 'data', function( msg, done ){
+worker.on( 'data', function( msg, done ){
 
-  filter._debug( 'filter2 got message', msg );
+  worker._debug( 'worker got message', msg );
   
-  // do some work on the data
-  doSomethingAsnyc( { cmd: 'takes_time', msg: msg }, function( err, data ){  
-    
-    // send some work downstream
-    filter.write( data );
-
-    // worker must call done() when task is completed
-    done();
-
+  doSomethingAsnyc( { cmd: 'takes_time' }, function( err, data ){  
+    done(); // worker completed this task
   });
 
 });
@@ -85,7 +77,7 @@ filter.on( 'data', function( msg, done ){
   
 The worker will automatically handle concurrency control; when the maximum number of concurrent jobs are being executed on this process the `stdin` socket(s) will disconnect.  
   
-When the worker is again free to process data it will automatically re-connect it's `stdin` socket(s) and start processing messages again. 
+When the worker is again free to process data it will automatically re-connect it's `stdin` socket(s) and start processing messages again.  
   
 ----  
   
