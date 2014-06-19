@@ -5,7 +5,7 @@ A distributed non-buffering data pipeline with built in orchestrator and flood c
 
 ====
 
-#### overview
+#### Overview
 
 A pipeline is a set of workers acting both in series and in parallel. The data is constantly moving down the pipeline from one server to the next. 
     
@@ -13,7 +13,7 @@ The pipeline will auto balance, turning off the tap when the pipes or sink can't
 
 ====
 
-#### notice
+#### Notice
 
 **In active development** - The public API will likely change before the initial release.  
   
@@ -23,7 +23,7 @@ Run `npm run symlink` to create a symlink that fixes this during development.
     
 ====
 
-#### inspired by unix pipes and zeromq
+#### Inspired by unix pipes and zeromq
   
 `unix pipes` provide an amazingly easy-to-use and portable API.
 
@@ -38,7 +38,7 @@ echo '{ hello: "world" }' | filter.sh 2>> error.txt | map.sh 1> out.txt 2>> erro
 
 ====
 
-#### pipeline
+#### Pipeline
 
 `pipeline` aims to provide a similar unix pipes `API` with support for `TCP` sockets while also offering:
 
@@ -46,9 +46,13 @@ echo '{ hello: "world" }' | filter.sh 2>> error.txt | map.sh 1> out.txt 2>> erro
 - Smart **flood control** mechanisms to avoid buffering data at any branch of the pipe.
 - Role-based workflows which allows simple ways to **perform tasks in parallel** or **in a series**. 
 
+```javascript
+new pipeline.Pipeline().from('a').to('b');
+```
+
 ====
 
-#### orchestrator
+#### Orchestrator
   
 `pipeline` allows you to create worker processes which run anywhere on your network. Rather than assigning your workers fixed addresses, `pipeline` allows you to delegate addressing to a process called the `orchestractor`.  
   
@@ -69,7 +73,7 @@ orchestrator.bind(5000);
     
 ====
     
-#### worker
+#### Worker
 
 Each worker must be assigned a `role`. Their unique network addresses don't matter and can change without causing the entire pipeline to error.  
   
@@ -111,7 +115,7 @@ When the worker is again free to process data it will automatically re-connect i
   
 ====  
   
-#### trying out the project  
+#### Trying out the project  
   
 You can try out the project in it's current form; while the code is not release-ready yet, there IS a functional demo that runs all the workers in child processes and pipes all their `stdout` streams to one window for easy debugging.  
   
@@ -124,7 +128,7 @@ $> npm start
 
 ==== 
 
-#### example
+#### Example
   
 In this example, we want to parse a 100GB file of users. For each `user` in the file we want to go and look up their facebook profile; twitter profile and then save the record to `mongodb`.  
   
