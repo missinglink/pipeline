@@ -141,19 +141,19 @@ then we tell the `orchestrator` how to connect them together:
 either in series:
 
 ```
-         ┌── facebook ── twitter ──┐
-parser ──┼── facebook ── twitter ──┼── mongo_client
-         └── facebook ── twitter ──┘
+         ┌─→ facebook ─→ twitter ──┐
+parser ──┼─→ facebook ─→ twitter ──┼─→ mongo_client
+         └─→ facebook ─→ twitter ──┘
 ```
 
 or in parallel:
 
 ```
-         ┌── facebook ──┐
-         ├── facebook ──┤
-parser ──┤              ├── merger ── mongo_client
-         ├── twitter ───┤
-         └── twitter ───┘
+         ┌─→ facebook ──┐
+         ├─→ facebook ──┤
+parser ──┤              ├─→ merger ─→ mongo_client
+         ├─→ twitter ───┤
+         └─→ twitter ───┘
 ```
 
 ... simple as that, the pipeline will load-balance each role. workers will slow-down and speed up depending on the ability of the 3rd party services to fulful the requests.
