@@ -121,7 +121,43 @@ $> npm install
 $> npm run symlink  
 $> npm start
 ```
-    
+
+==== 
+
+##### example
+  
+In this example, we want to parse a 100GB file of users. For each `user` in the file we want to go and look up their facebook profile; twitter profile and then save the record to `mongodb`.  
+  
+workers:  
+
+- orchestrator (singleton)  
+- file parser (1 worker)
+- facebook (10 workers)  
+- twitter (10 workers)  
+- mongo client (2 workers)
+  
+then we tell the `orchestrator` how to connect them together:
+
+either in series:
+
+```
+       | facebook | twitter |
+parser | facebook | twitter | mongo_client
+       | facebook | twitter |
+```
+
+or in parallel:
+
+```
+        /- facebook -\
+       /-- facebook --\
+parser |              | merger | mongo_client
+       \-- twitter  --/
+        \- twitter --/
+```
+
+... simple as that, the pipeline will load-balance each role. workers will slow-down and speed up depending on the ability of the 3rd party services to fulful the requests.
+
 ====  
   
 #### FAQ      
@@ -134,27 +170,7 @@ A queue is limited by the available memory and disk space, which can become a pr
       
 **Q. So you stream from the orchestrator to the available workers and then stream the responses back to the orchestrator?**
   
-No, the orchestractor **ONLY** tells workers where to attach their `stdin` streams to; it does not do any work and does not usually ever see any of the data.  
-  
-##### Example:
-  
-In this example, we want to parse a 100GB file of users. For each `user` in the file we want to go and look up their facebook profile; twitter profile and then save the record to `mongodb`.  
-  
-workers:  
-
-- orchestrator (singleton)  
-- file parser (1 worker)
-- facebook (10 workers)  
-- twitter (10 workers)  
-- mongodb (2 workers)
-  
-then we tell the `orchestrator` how to connect them together:  
-
-```
-parser | facebook | twitter | mongodb  
-```
-  
-... simple as that, the pipeline will load-balance each role. workers will slow-down and speed up depending on the ability of the 3rd party services to fulful the requests.  
+No, the orchestractor **ONLY** tells workers where to attach their `stdin` streams to; it does not do any work and does not usually ever see any of the data.
 
 **Q. How do the worker know which port to bind to?** 
   
