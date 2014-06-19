@@ -5,7 +5,7 @@ A distributed non-buffering data pipeline with built in orchestrator and flood c
 
 ====
 
-#### Overview
+#### overview
 
 A pipeline is a set of workers acting both in series and in parallel. The data is constantly moving down the pipeline from one server to the next. 
     
@@ -13,7 +13,7 @@ The pipeline will auto balance, turning off the tap when the pipes or sink can't
 
 ====
 
-#### Notice
+#### notice
 
 **In active development** - The public API will likely change before the initial release.  
   
