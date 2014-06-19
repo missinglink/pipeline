@@ -108,7 +108,7 @@ $> npm start
        
 **Q. How does this differ from a traditional job queue?**
   
-A queue system has a single centralized server to buffer messages until worker nodes collect them.  
+A queue system has a single centralized server to store messages until worker nodes collect them.  
   
 A queue is limited by the available memory and disk space, which can become a problem when dealing with very large datasets.
   
@@ -118,7 +118,7 @@ A pipeline will auto balance, turning off the tap when the pipes or sink can't h
       
 **Q. So you stream from the orchestrator to the available workers and then stream the responses back to the orchestrator?**
   
-The orchestractor **ONLY** tells workers where to attach their `stdin` streams to; it does not do any work and does not usually ever see any of the data.  
+No, the orchestractor **ONLY** tells workers where to attach their `stdin` streams to; it does not do any work and does not usually ever see any of the data.  
   
 ##### Example:
   
