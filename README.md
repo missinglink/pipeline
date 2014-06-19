@@ -2,7 +2,17 @@
 ## Pipeline
 
 A distributed non-buffering data pipeline with built in orchestrator and flood control.  
-  
+
+### Overview
+
+A pipeline is a set of workers acting both in series and in parallel. The data is constantly moving down the pipeline from one server to the next. 
+    
+The pipeline will auto balance, turning off the tap when the pipes or sink can't handle the flow, each worker can disconnect if they are experiencing issues. This mitigates the memory and disk issues and isolates them to a single node.
+
+----
+
+#### Notice
+
 **In active development** - The public API will likely change before the initial release.  
   
 **Unpublished** - calls to `require('pipeline')` will fail as the module is not being published in `npm`. Additionally the name `pipeline` has been taken so it will use a different name.  
@@ -119,10 +129,6 @@ $> npm start
 A queue system has a single centralized server to store messages until worker nodes collect them.  
   
 A queue is limited by the available memory and disk space, which can become a problem when dealing with very large datasets.
-  
-A pipeline is a set of workers acting both in series and in parallel. The data is constantly moving down the pipeline from one server to the next.  
-    
-A pipeline will auto balance, turning off the tap when the pipes or sink can't handle the flow, each worker can disconnect if they are experiencing issues. This mitigates the memory and disk issues and isolates them to a single node.
       
 **Q. So you stream from the orchestrator to the available workers and then stream the responses back to the orchestrator?**
   
