@@ -91,14 +91,11 @@ worker.on( 'data', function( msg, done ){
 
   worker._debug( 'worker2 got message', msg );
   
-  // do some work on the data
+  // worker must call done() when task is completed
   doSomethingAsnyc( { cmd: 'takes_time', msg: msg }, function( err, data ){  
     
-    // send some work downstream
-    worker.write( data );
-
-    // worker must call done() when task is completed
-    done();
+    // send some work downstream and pass done handler to write socket
+    worker.write( data, done );
 
   });
 
