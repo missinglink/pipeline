@@ -70,7 +70,7 @@ filter.on( 'data', function( msg, done ){
   filter._debug( 'filter2 got message', msg );
   
   // do some work on the data
-  doSomethingAsnyc( { cmd: 'takes_time' }, function( err, data ){  
+  doSomethingAsnyc( { cmd: 'takes_time', msg: msg }, function( err, data ){  
     
     // send some work downstream
     filter.write( data );
