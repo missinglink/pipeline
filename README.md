@@ -28,7 +28,7 @@ echo '{ hello: "world" }' | filter.sh 2>> error.txt | map.sh 1> out.txt 2>> erro
 
 #### pipeline
 
-`pipeline` aims to extend the unix pipes `API` to `TCP` sockets while also offering:
+`pipeline` aims to provide a similar unix pipes `API` with support for `TCP` sockets while also offering:
 
 - The ability to attach **multiple processes** to `stdin` `stdout` and `stderr`.
 - Smart **flood control** mechanisms to avoid buffering data at any branch of the pipe.
