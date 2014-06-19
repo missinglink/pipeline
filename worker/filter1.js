@@ -3,6 +3,7 @@ var pipeline = require('../');
 
 var filter1 = new pipeline.Worker({
   role: 'filter',
+  concurrency: 10,
   orchestrator: { port: 5000 }
 });
 

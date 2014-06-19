@@ -3,6 +3,7 @@ var pipeline = require('../');
 
 var map2 = new pipeline.Worker({
   role: 'map',
+  concurrency: 100,
   orchestrator: { port: 5000 }
 });
 
