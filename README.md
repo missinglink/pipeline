@@ -114,7 +114,7 @@ A pipeline is a set of workers acting both in series and in parallel. The data i
     
 A pipeline will auto balance, turning off the tap when the pipes or sink can't handle the flow, each worker can disconnect if they are experiencing issues. This mitigates the memory and disk issues and isolates them to a single node.
       
-**Q. So you stream from the orchestrator to the available workers and then stream the responses back to the orchestrator? 
+**Q. So you stream from the orchestrator to the available workers and then stream the responses back to the orchestrator?**
   
 The orchestractor **ONLY** tells workers where to attach their `stdin` streams to; it does not do any work and does not usually ever see any of the data.  
   
