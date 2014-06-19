@@ -154,7 +154,7 @@ then we tell the `orchestrator` how to connect them together:
 parser | facebook | twitter | mongodb  
 ```
   
-... simple as that, the pipeline will slow-down and speed up depending on the ability of the 3rd party services to fulful the requests.  
+... simple as that, the pipeline will load-balance each role. workers will slow-down and speed up depending on the ability of the 3rd party services to fulful the requests.  
 
 **Q. How do the worker know which port to bind to?** 
   
