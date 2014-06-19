@@ -46,10 +46,6 @@ echo '{ hello: "world" }' | filter.sh 2>> error.txt | map.sh 1> out.txt 2>> erro
 - Smart **flood control** mechanisms to avoid buffering data at any branch of the pipe.
 - Role-based workflows which allows simple ways to **perform tasks in parallel** or **in a series**. 
 
-```javascript
-new pipeline.Pipeline().from('a').to('b');
-```
-
 ====
 
 #### Orchestrator
