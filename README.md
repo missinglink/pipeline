@@ -9,7 +9,7 @@ A distributed non-buffering data pipeline with built in orchestrator and flood c
 
 A pipeline is a set of workers acting both in series and in parallel. The data is constantly moving down the pipeline from one server to the next. 
     
-The pipeline will auto balance, turning off the tap when the pipes or sink can't handle the flow, each worker can disconnect if they are experiencing issues. This mitigates the memory and disk issues and isolates them to a single node.
+The pipeline will auto balance, turning off the tap when the pipes or sink can't handle the flow, each worker can disconnect/recoonect if they are experiencing flooding or internal errors. This mitigates the memory and disk issues and isolates them to a single node.
 
 ====
 
