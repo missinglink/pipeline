@@ -144,9 +144,11 @@ parser | facebook | twitter | mongodb
   
 Each worker binds it's `stdout` stream(s) to `INADDR_ANY` (any available port).  
   
-The worker then connects to the `orchestrator` and announces it's `role` and the network address peers can connect to if they wish to consume it's output.  
+The worker then connects to the `orchestrator` and announces it's `role` and the network address that peers can connect to if they wish to consume it's output.  
   
-Conventional logic would suggest you `bind` your `stdin` and `connect` on your `stdout`. Using the inverse allows for the worker to `disconnect` its `stin` socket(s) when it starts to flood while maintaining the port it has bound for `stdout`.
+Conventional logic would suggest you `bind` your `stdin` and `connect` on your `stdout`.
+
+Using the inverse allows for the worker to `disconnect` its `stin` socket(s) when it starts to flood while maintaining the port it has bound for `stdout`.
      
 ----
   
