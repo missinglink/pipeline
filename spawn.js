@@ -2,7 +2,7 @@
 var child = require('child_process');
 
 spawn( 'filter1' );
-// spawn( 'filter2' );
+spawn( 'filter2' );
 // spawn( 'filter3' );
 spawn( 'logger' );
 // spawn( 'filter2' );

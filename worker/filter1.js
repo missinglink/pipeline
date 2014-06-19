@@ -16,8 +16,8 @@ filter1.on( 'data', function( msg, done ){
   var rand = Math.random() * 5000;
 
   setTimeout( function(){
-    filter1.write( { msg: msg.msg + ' | filter: ' + ord++ }, done );
-  }, ( Math.random() * 2000 ) )
+    filter1.write( { msg: msg.msg + ' | filter1: ' + ord++ }, done );
+  }, ( Math.random() * 2000 ) );
 
   // setTimeout( done, ( Math.random() * 2000 ) );
   // if( rand ){
