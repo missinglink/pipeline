@@ -11,7 +11,7 @@ Run `npm run symlink` to create a symlink that fixes this during development.
     
 ----
 
-#### based on unix pipes  
+#### inspired by unix pipes and zeromq
   
 `unix pipes` provide an amazingly easy-to-use and portable API.
 
@@ -19,6 +19,10 @@ Run `npm run symlink` to create a symlink that fixes this during development.
 #unix pipes  
 echo '{ hello: "world" }' | filter.sh 2>> error.txt | map.sh 1> out.txt 2>> error.txt  
 ```
+
+`zeromq (ØMQ)` is an asynchronous messaging library.
+
+~[zeromq](http://learning-0mq-with-pyzmq.readthedocs.org/en/latest/_images/pushpull.png)
 
 ----
 
