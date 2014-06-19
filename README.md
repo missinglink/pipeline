@@ -15,16 +15,16 @@ Run `npm run symlink` to create a symlink that fixes this during development.
   
 `unix pipes` provide an amazingly easy-to-use and portable API.
 
-`pipeline` aims to extend that API to TCP sockets while also offering:
-
-- the ability to attach multiple processes to `stdin` `stdout` and `stderr`.
-- smart flood control mechanisms to avoid buffering data at any branch of the pipe.
-- role-based workflows which allows simple ways to perform tasks in parallel or in a series. 
-  
 ```bash  
 #unix pipes  
-echo '{ hello: "world" }' | filter 2>> error.txt | map 1> out.txt 2>> error.txt  
-```  
+echo '{ hello: "world" }' | filter.sh 2>> error.txt | map.sh 1> out.txt 2>> error.txt  
+```
+
+`pipeline` aims to extend that `API` to `TCP` sockets while also offering:
+
+- The ability to attach **multiple processes** to `stdin` `stdout` and `stderr`.
+- Smart **flood control** mechanisms to avoid buffering data at any branch of the pipe.
+- Role-based workflows which allows simple ways to **perform tasks in parallel or in a series**. 
 
 ----
 
