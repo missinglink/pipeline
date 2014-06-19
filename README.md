@@ -3,13 +3,15 @@
 
 A distributed non-buffering data pipeline with built in orchestrator and flood control.  
 
-### Overview
+====
+
+#### Overview
 
 A pipeline is a set of workers acting both in series and in parallel. The data is constantly moving down the pipeline from one server to the next. 
     
 The pipeline will auto balance, turning off the tap when the pipes or sink can't handle the flow, each worker can disconnect if they are experiencing issues. This mitigates the memory and disk issues and isolates them to a single node.
 
-----
+====
 
 #### Notice
 
@@ -19,7 +21,7 @@ The pipeline will auto balance, turning off the tap when the pipes or sink can't
   
 Run `npm run symlink` to create a symlink that fixes this during development.
     
-----
+====
 
 #### inspired by unix pipes and zeromq
   
@@ -34,7 +36,7 @@ echo '{ hello: "world" }' | filter.sh 2>> error.txt | map.sh 1> out.txt 2>> erro
 
 ![zeromq](http://learning-0mq-with-pyzmq.readthedocs.org/en/latest/_images/pushpull.png)
 
-----
+====
 
 #### pipeline
 
@@ -44,7 +46,7 @@ echo '{ hello: "world" }' | filter.sh 2>> error.txt | map.sh 1> out.txt 2>> erro
 - Smart **flood control** mechanisms to avoid buffering data at any branch of the pipe.
 - Role-based workflows which allows simple ways to **perform tasks in parallel** or **in a series**. 
 
-----
+====
 
 #### orchestrator
   
@@ -65,7 +67,7 @@ var orchestrator = new pipeline.Orchestrator(
 orchestrator.bind(5000);
 ```
     
-----
+====
     
 #### worker
 
@@ -107,7 +109,7 @@ The worker will automatically handle concurrency control; when the maximum numbe
   
 When the worker is again free to process data it will automatically re-connect it's `stdin` socket(s) and start processing messages again. 
   
-----  
+====  
   
 #### trying out the project  
   
@@ -120,7 +122,7 @@ $> npm run symlink
 $> npm start
 ```
     
-----  
+====  
   
 #### FAQ      
        
@@ -164,6 +166,6 @@ Conventional logic would suggest you `bind` your `stdin` and `connect` on your `
 
 Using the inverse allows for the worker to `disconnect` its `stin` socket(s) when it starts to flood while maintaining the port it has bound for `stdout`.
      
-----
+====
   
 ... more to come
