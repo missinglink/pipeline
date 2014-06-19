@@ -174,6 +174,8 @@ new pipeline.Pipeline()
 
 **Note:** The `parser` should pause iteration when no peer sockets are connected.
 
+**Note:** The `merger` should be configured with a high concurrency value.
+
 **Note:** The `mongo_client` should call `worker.pause()` if mongodb starts to become slow or un-responsive.
 
 
