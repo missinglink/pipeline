@@ -126,7 +126,7 @@ $> npm start
 
 #### Example
   
-In this example, we want to parse a 100GB file of users. For each `user` in the file we want to go and look up their facebook profile; twitter profile and then save the record to `mongodb`.  
+In this example, we want to parse a 100GB file of users. For each `user` in the file we want to go and look up their facebook profile; twitter profile and then save the record to the `database`.  
   
 ###### workers  
 
@@ -134,7 +134,7 @@ In this example, we want to parse a 100GB file of users. For each `user` in the 
 - file parser (1 worker)
 - facebook (10 workers)  
 - twitter (10 workers)  
-- mongo client (2 workers)
+- database client (2 workers)
   
 then we tell the `orchestrator` how to connect them together:
 
@@ -142,7 +142,7 @@ either **in series**:
 
 ```
          ┌─→ facebook ─→ twitter ──┐
-parser ──┼─→ facebook ─→ twitter ──┼─→ mongo_client
+parser ──┼─→ facebook ─→ twitter ──┼─→ database_client
          └─→ facebook ─→ twitter ──┘
 ```
 
@@ -150,7 +150,7 @@ parser ──┼─→ facebook ─→ twitter ──┼─→ mongo_client
 new pipeline.Pipeline()
   .from('parser').to('facebook')
   .from('facebook').to('twitter')
-  .from('twitter').to('mongo_client');
+  .from('twitter').to('database_client');
 ```
 
 or **in parallel**:
@@ -158,7 +158,7 @@ or **in parallel**:
 ```
          ┌─→ facebook ──┐
          ├─→ facebook ──┤
-parser ──┤              ├─→ merger ─→ mongo_client
+parser ──┤              ├─→ merger ─→ database_client
          ├─→ twitter ───┤
          └─→ twitter ───┘
 ```
@@ -167,7 +167,7 @@ parser ──┤              ├─→ merger ─→ mongo_client
 new pipeline.Pipeline()
   .from('parser').to('facebook').from('facebook').to('merger')
   .from('parser').to('twitter').from('twitter').to('merger')
-  .from('merger').to('mongo_client');
+  .from('merger').to('database_client');
 ```
 
 ... simple as that, the pipeline will load-balance each role. workers will slow-down and speed up depending on the ability of the 3rd party services to fulful the requests.
@@ -176,7 +176,7 @@ new pipeline.Pipeline()
 
 **Note:** The `merger` should be configured with a high concurrency value.
 
-**Note:** The `mongo_client` should call `worker.pause()` if mongodb starts to become slow or un-responsive.
+**Note:** The `database_client` should call `worker.pause()` if the database starts to become slow or un-responsive.
 
 
 ====  
