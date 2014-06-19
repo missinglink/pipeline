@@ -22,7 +22,7 @@ echo '{ hello: "world" }' | filter.sh 2>> error.txt | map.sh 1> out.txt 2>> erro
 
 `zeromq (ØMQ)` is an asynchronous messaging library.
 
-~[zeromq](http://learning-0mq-with-pyzmq.readthedocs.org/en/latest/_images/pushpull.png)
+![zeromq](http://learning-0mq-with-pyzmq.readthedocs.org/en/latest/_images/pushpull.png)
 
 ----
 
