@@ -126,7 +126,7 @@ $> npm start
 
 #### Example
   
-In this example, we want to parse a 100GB file of users. For each `user` in the file we want to go and look up their facebook profile; twitter profile and then save the record to the `database`.  
+In this example, we want to parse a file of 10M user records. For each `user` in the file we want to go and look up their facebook profile; twitter profile and then save the record to the `database`.  
   
 ###### workers  
 
