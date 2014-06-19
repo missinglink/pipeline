@@ -128,7 +128,7 @@ $> npm start
   
 In this example, we want to parse a 100GB file of users. For each `user` in the file we want to go and look up their facebook profile; twitter profile and then save the record to `mongodb`.  
   
-workers:  
+###### workers  
 
 - orchestrator (singleton)  
 - file parser (1 worker)
