@@ -71,6 +71,10 @@ filter.on( 'data', function( msg, done ){
 });
 ```  
   
-The worker will automatically handle concurrency control; when the maximum number of concurrent jobs are being executed on this process the `stin`socket will disconnect.  
+The worker will automatically handle concurrency control; when the maximum number of concurrent jobs are being executed on this process the `stdin` socket(s) will disconnect.  
   
-When the worker is again free to process data it will automatically re-connect it's `stdin` and start processing messages again.
+When the worker is again free to process data it will automatically re-connect it's `stdin` socket(s) and start processing messages again.  
+  
+----  
+  
+... more to come
