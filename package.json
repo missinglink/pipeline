@@ -11,6 +11,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "npm test",
+    "symlink": "ln -s $PWD $PWD/node_modules/pipeline",
     "start": "node spawn.js"
   },
   "repository": {

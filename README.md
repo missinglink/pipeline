@@ -3,8 +3,12 @@
 
 A distributed non-buffering data pipeline with built in orchestrator and flood control.  
   
-**Note:** In active development - The public API will likely change before the initial release.
-
+**In active development** - The public API will likely change before the initial release.  
+  
+**Unpublished** - calls to `require('pipeline')` will fail as the module is not being published in `npm`. Additionally the name `pipeline` has been taken so it will use a different name.  
+  
+ Run `npm run symlink` to create a symlink that fixes this during development.
+    
 ----
 
 #### unix philosophy  
