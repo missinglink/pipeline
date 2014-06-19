@@ -3,7 +3,7 @@
 
 A distributed non-buffering data pipeline with built in orchestrator and flood control.  
   
-** Note: ** In active development - The public API will likely change before the initial release.
+*** Note: *** In active development - The public API will likely change before the initial release.
 
 ----
 
