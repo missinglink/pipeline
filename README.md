@@ -83,7 +83,7 @@ When the worker is again free to process data it will automatically re-connect i
   
 #### trying out the project  
   
-You can try out the project in it's current form; while the code is not release-ready yet, there IS a functional demo that runs all the workers in child processes and pipes all their `stdout` streams to one window for easy debugging.
+You can try out the project in it's current form; while the code is not release-ready yet, there IS a functional demo that runs all the workers in child processes and pipes all their `stdout` streams to one window for easy debugging.  
   
 ```bash  
 $> git clone git@github.com:missinglink/pipeline.git && cd pipeline
