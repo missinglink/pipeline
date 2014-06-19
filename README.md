@@ -138,7 +138,7 @@ In this example, we want to parse a 100GB file of users. For each `user` in the 
   
 then we tell the `orchestrator` how to connect them together:
 
-###### in series
+either in series:
 
 ```
          ┌─→ facebook ─→ twitter ──┐
@@ -153,7 +153,7 @@ new pipeline.Pipeline()
   .from('twitter').to('mongo_client');
 ```
 
-###### in parallel
+or in parallel:
 
 ```
          ┌─→ facebook ──┐
