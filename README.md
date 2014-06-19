@@ -146,6 +146,13 @@ parser ──┼─→ facebook ─→ twitter ──┼─→ mongo_client
          └─→ facebook ─→ twitter ──┘
 ```
 
+```javascript
+new pipeline.Pipeline()
+  .from('parser').to('facebook')
+  .from('facebook').to('twitter')
+  .from('twitter').to('mongo_client');
+```
+
 or in parallel:
 
 ```
@@ -154,6 +161,15 @@ or in parallel:
 parser ──┤              ├─→ merger ─→ mongo_client
          ├─→ twitter ───┤
          └─→ twitter ───┘
+```
+
+```javascript
+new pipeline.Pipeline()
+  .from('parser').to('facebook')
+  .from('parser').to('twitter')
+  .from('facebook').to('merger')
+  .from('twitter').to('merger')
+  .from('merger').to('mongo_client');
 ```
 
 ... simple as that, the pipeline will load-balance each role. workers will slow-down and speed up depending on the ability of the 3rd party services to fulful the requests.
